@@ -1,0 +1,101 @@
+body {
+	color: #282828;
+	font: 16px/26px Arial, Helvetica, sans-serif;
+	background:#fff;
+	min-width: 960px;
+	margin: 0;
+}
+a {
+	color: #8ecc36;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+a:active {
+	background-color: transparent;
+}
+input, 
+textarea, 
+select {
+	font: 100% Arial, Helvetica, sans-serif;
+	vertical-align: middle;
+	color: #666;
+}
+article, 
+aside, 
+details, 
+figcaption, 
+figure, 
+footer, 
+header, 
+menu, 
+nav,
+main, 
+section {
+	display: block;
+}
+form, 
+fieldset {
+	margin: 0;
+	padding: 0;
+	border-style: none;
+}
+img {border: none;}
+input[type="text"], 
+input[type="password"], 
+input[type="submit"], 
+input[type="file"], 
+input[type="search"], 
+input[type="email"], 
+input[type="tell"], 
+input[type="url"], 
+select, 
+textarea {
+	-webkit-appearance: none;
+	-webkit-border-radius: 0;
+}
+input[type=submit]:hover, 
+button[type=reset]:hover, 
+button[type=submit]:hover {cursor: pointer;}
+input[type=submit]::-moz-focus-inner, 
+button[type=reset]::-moz-focus-inner, 
+button[type=submit]::-moz-focus-inner {
+	border:0;
+	padding:0;
+q {quotes: none;}
+}
+q:after {content: '';}
+q:before {content: '';}
+::-webkit-input-placeholder {color: #8f8f8f;}
+:-moz-placeholder {color: #8f8f8f;}
+::-moz-placeholder {
+    color: #8f8f8f;
+    opacity: 1;
+}
+:-ms-input-placeholder {color: #8f8f8f;}
+
+
+#wrapper{
+    margin: 200px auto;
+}
+
+.js-step-easing ul{
+    list-style: none;
+}
+
+.js-step-easing ul li{
+    display: inline-block;
+    width: 300px;
+    height: 200px;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.js-step-easing ul li img{
+    width: 100%;
+    height: auto;
+}
+.buttons{
+	text-align: center;
+}
