@@ -39,7 +39,7 @@
 					configB = $(b).data('easing');
 
 				if (configA && configB){
-					return +configA.step > +configB.step ? 1 : -1;
+					return configA.step > configB.step ? 1 : -1;
 				}
 			});
 			
@@ -57,51 +57,59 @@
 
 			this.makeCallback('onInit', this);
 		},
-		run:function(index, callback){
+		startAnimation:function(index, callback){
 			var self = this,
-				boxesLength = this.boxes.length;
-			
-			if (!index){
-				index = 0;
-			} else if (typeof index === 'function'){
-				callback = index;
-				index = 0;
-			} else {
-				index = Math.max(0, Math.min(boxesLength - 1, index));
-			}
+				dfr;
+			// this.deferred = jQuery.Deferred();
 
-			function _animateBox(box){
-				var config = box.data('easing'),
-					speed = !isNaN(+config.speed) ? +config.speed : self.options.animSpeed,
-					delay = !isNaN(+config.delay) ? +config.delay : self.options.delay;
+			// this.deferred.done(function(){
+			// 	if (jQuery.isFunction(callback)){
+			// 		self.makeCallback('onComplete', self);
+			// 		callback.apply(self);
+			// 	}
+			// });
+			// for (var i = 0; i < this.boxes.length - 1; i += 1){
+				dfr = this.animateBox(this.boxes.eq(index));
+				dfr.done(function(){
+					dfr = self.animateBox(self.boxes.eq(index += 1));
+				});
+			// }
+		},
+		animateBox: function(box){
+			var self = this,
+				deferred = jQuery.Deferred(),
+				boxesLength = this.boxes.length,
+				index = box.index(),
+				config = box.data('easing'),
+				speed = config.speed !== undefined ? config.speed : self.options.animSpeed,
+				delay = config.delay !== undefined ? config.delay : self.options.delay;
 
-				function _onComplete(){
-					if (!self.busy){
-						if (index < boxesLength - 1){
-							_animateBox(self.boxes.eq(index += 1));
-						} else {
-							self.makeCallback('onComplete', self);
-							if (typeof callback === 'function'){
-								callback.apply(self);
-							}
+			// function _onComplete(){
+			// 	if (!self.busy){
+			// 		if (index < boxesLength - 1){
+			// 			self.animateBox(self.boxes.eq(index + 1));
+			// 		} else {
+			// 			self.deferred.resolve();
+			// 		}
+			// 	}
+			// }
+
+			this.timer = setTimeout(function(){
+				if (self.effects[config.effect].run){
+					self.effects[config.effect].run({
+						box: box,
+						speed: speed,
+						complete:function(){
+							deferred.resolve();
 						}
-					}
+					});
+				} else {
+					deferred.resolve();
+					// _onComplete.apply(box.get(0));
 				}
+			}, delay);
 
-				self.timer = setTimeout(function(){
-					if (self.effects[config.effect].run){
-						self.effects[config.effect].run({
-							box: box,
-							speed: speed,
-							complete:_onComplete
-						});
-					} else {
-						_onComplete.apply(box.get(0));
-					}
-				}, delay);
-			}
-
-			_animateBox(this.boxes.eq(index));
+			return deferred.promise();
 		},
 		makeCallback:function(name){
 			if (typeof this.options[name] === 'function'){
@@ -150,7 +158,7 @@
 
 	StepEasing.addEffect = function(effect){
 		$.extend(StepEasing.prototype.effects, effect);
-	}
+	};
 
 	$.fn.stepEasing = function(options){
 		return this.each(function(){
