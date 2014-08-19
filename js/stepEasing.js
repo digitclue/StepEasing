@@ -10,10 +10,11 @@
 			onInit:null,
 			onComplete:null,
 			onDestroy:null,
-			functions:null
+			effects:null
 		}, options);
 		if (this.options.holder){
 			this.findElements();
+			this.init();
 		}
 	}
 	StepEasing.prototype = {
@@ -22,8 +23,8 @@
 			this.holder = $(this.options.holder);
 			this.boxes = this.holder.find(this.options.box);
 
-			// extend with custom functions
-			$.extend(this.functions, this.options.functions);
+			// extend with custom effects
+			$.extend(this.effects, this.options.effects);
 		},
 		init:function(){
 			var self = this;
@@ -47,10 +48,11 @@
 				var box = $(this).stop(true),
 					config = box.data('easing');
 
-				if (!config.function || !self.functions[config.function]){
-					config.function = 'fade';
+				if (!config.effect || !self.effects[config.effect]){
+					config.effect = 'fade';
 				}
-				self.functions[config.function].init(box);
+				
+				self.effects[config.effect].init(box);
 			});
 
 			this.makeCallback('onInit', this);
@@ -87,8 +89,8 @@
 				}
 
 				self.timer = setTimeout(function(){
-					if (self.functions[config.function].run){
-						self.functions[config.function].run({
+					if (self.effects[config.effect].run){
+						self.effects[config.effect].run({
 							box: box,
 							speed: speed,
 							complete:_onComplete
@@ -115,8 +117,8 @@
 				var box = jQuery(this).stop(true),
 					config = box.data('easing');
 
-				if (self.functions[config.function].destroy){
-					self.functions[config.function].destroy(box);
+				if (self.effects[config.effect].destroy){
+					self.effects[config.effect].destroy(box);
 				} else {
 					box.removeAttr('style');
 				}
@@ -125,7 +127,7 @@
 			this.makeCallback('onDestroy', self);
 			this.holder.removeData('StepEasing');
 		},
-		functions: {
+		effects: {
 			fade:{
 				init:function(box){
 					box.hide();
@@ -144,8 +146,10 @@
 		}
 	};
 
-	if (!window.StepEasing){
-		window.StepEasing = StepEasing;
+	window.StepEasing = StepEasing;
+
+	StepEasing.addEffect = function(effect){
+		$.extend(StepEasing.prototype.effects, effect);
 	}
 
 	$.fn.stepEasing = function(options){

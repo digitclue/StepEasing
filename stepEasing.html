@@ -9,30 +9,31 @@
 <body>
 	<div id="wrapper">
 		<div class="js-step-easing">
+			<h2>Default fade effect</h2>
 			<div class="buttons">
 				<a href="#" class="btn-run">Run from</a>
 				<input type="text">
 				<a href="#" class="btn-refresh">Set initial</a>
 			</div>
-			<ul>
+			<ul class="image-list">
 				<li data-easing='{
-					"step":"0",
-					"delay":"0"
+					"step":0,
+					"delay":0
 				}'>
 					<img src="images/328244_317657.jpg" alt="" width="600" height="451">
 				</li>
 				<li data-easing='{
-					"step":"1"
+					"step":1
 				}'>
 					<img src="images/GVX2kBwxx1g.jpg" alt="" width="1280" height="906">
 				</li>
 				<li data-easing='{
-					"step":"2"
+					"step":2
 				}'>
 					<img src="images/P4WN6jinLJA.jpg" alt="" width="1280" height="920">
 				</li>
 				<li data-easing='{
-					"step":"3"
+					"step":3
 				}'>
 					<img src="images/z_152429a7.jpg" alt="" width="1280" height="960">
 				</li>
@@ -41,7 +42,7 @@
 	</div>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script type="text/javascript">window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>')</script>
-	<script type="text/javascript" src="js/stepAnimation.js"></script>
+	<script type="text/javascript" src="js/stepEasing.js"></script>
 
 	<script type="text/javascript">
 		jQuery('.js-step-easing').each(function(){
@@ -52,8 +53,6 @@
 				instance = new StepEasing({
 					holder:holder
 				});
-
-			instance.init();
 
 			function runHandler(e){
 				e.preventDefault();
